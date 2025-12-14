@@ -4,14 +4,14 @@ board_player = [" "] * 9
 board_pc = [" "] * 9
 
 def show_board_player():
-    print()
+    print('Поле игрока')
     for i in range(0, 9, 3):
         print(board_player[i] + "|" + board_player[i + 1] + "|" + board_player[i + 2])
         if i < 6:
             print("-----")
 
 def show_board_pc():
-    print()
+    print('Поле pc')
     for i in range(0, 9, 3):
         print(board_pc[i] + "|" + board_pc[i + 1] + "|" + board_pc[i + 2])
         if i < 6:
@@ -60,7 +60,6 @@ def player_shot():
             else:
                 print("Промах")
                 board_pc[player_num_shot] = "O"  # O - промах
-
             show_board_pc()
             break
 
@@ -68,7 +67,36 @@ def player_shot():
             print("Не правильный ввод")
 
 def pc_shot():
-    pass
+    while True:
+        pc_num_shot=random.randint(0,8)
+
+        if board_player[pc_num_shot] == "X" or board_player[pc_num_shot] == "O":
+            continue
+
+        if board_player[pc_num_shot] == "*":
+            print("ПК ПОПАЛ!!!")
+            board_player[pc_num_shot] = "X"
+            show_board_player()
+            pc_shot()
+            return
+        else:
+            print("Пк не попал...")
+            board_player[pc_num_shot] = "O"
+            break
+    show_board_pc()
+
+def chek_win_player():
+        win_point=0
+        for i in board_player:
+            if i == "X":
+                win_point +=1
+                break
+        if win_point == 3:
+            print("Ты выйграл!Ура")
+            show_board_pc()
+
+
+
 
 def main():
     player_num=0
@@ -81,6 +109,8 @@ def main():
         #отладка pc
         print('+++++++++++++')
         show_board_pc()
+        print('Стреляет игрок')
         player_shot()
+        print('Стреляет пк')
         pc_shot()
 main()
